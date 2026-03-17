@@ -1,7 +1,7 @@
 import torch
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
-from model import MNISTClassifier
+from src.model import MNISTClassifier
 
 
 def test_model_accuracy():
@@ -13,7 +13,7 @@ def test_model_accuracy():
     test_loader = DataLoader(dataset=test_dataset, batch_size=1000, shuffle=False)
 
     model = MNISTClassifier()
-    model.load_state_dict(torch.load("mnist_model.pth"))
+    model.load_state_dict(torch.load("src/mnist_model.pth"))
     model.eval()
 
     correct = 0

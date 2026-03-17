@@ -3,7 +3,7 @@ import torch.nn as nn
 from torchvision import transforms
 from PIL import Image, ImageOps
 import argparse
-from model import MNISTClassifier
+from src.model import MNISTClassifier
 
 def predict_digit(image_path, correctNumber):
     transform = transforms.Compose([
@@ -24,7 +24,7 @@ def predict_digit(image_path, correctNumber):
         return
 
     model = MNISTClassifier()
-    model.load_state_dict(torch.load("mnist_model.pth"))
+    model.load_state_dict(torch.load("src/mnist_model.pth"))
     model.eval()
 
     with torch.no_grad():
@@ -61,7 +61,7 @@ def fix_model(img_tensor, correct_label):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Розпізнавання рукописної цифри")
     parser.add_argument("image", type=str, help="Image file path (jpg/png)")
-    parser.add_argument("-c" "--correctNumber", type=int, help="For training model")
+    parser.add_argument("-c", "--correctNumber", type=int, help="For training model")
     args = parser.parse_args()
 
-    predict_digit(args.image, args.c__correctNumber)
+    predict_digit(args.image, args.correctNumber)

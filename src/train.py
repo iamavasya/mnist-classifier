@@ -4,7 +4,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
-from model import MNISTClassifier
+from src.model import MNISTClassifier
 
 
 def main():
@@ -61,7 +61,7 @@ def main():
         print(f'Epoch [{epoch + 1}/{epochs}], Loss: {running_loss / len(train_loader):.4f}')
 
     model.to("cpu")
-    torch.save(model.state_dict(), "mnist_model.pth")
+    torch.save(model.state_dict(), "src/mnist_model.pth")
     print("✅ Model trained and saved!")
 
 
