@@ -121,3 +121,4 @@ dmypy.json
 .idea
 data/MNIST/raw/t10k-images-idx3-ubyte
 data/*
+src/data/*
