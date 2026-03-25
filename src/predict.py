@@ -19,7 +19,7 @@ def predict_digit(image_path, correctNumber):
     img_tensor = transform(img)
     img_tensor = img_tensor.unsqueeze(0)
 
-    if correctNumber:
+    if correctNumber is not None:
         fix_model(img_tensor, correctNumber)
         return
 
