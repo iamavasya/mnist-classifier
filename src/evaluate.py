@@ -1,10 +1,16 @@
+import argparse
+import os
 import torch
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
-from src.model import MNISTClassifier
+from src.model import build_model
 
 
-def test_model_accuracy():
+def get_checkpoint_path(model_name):
+    return os.path.join("src", "checkpoints", f"mnist_{model_name}.pth")
+
+
+def test_model_accuracy(model_name='mlp', checkpoint_path=None):
     transform = transforms.Compose([
         transforms.ToTensor(),
         transforms.Normalize((0.1307,), (0.3081,))
@@ -12,8 +18,11 @@ def test_model_accuracy():
     test_dataset = datasets.MNIST(root='./data', train=False, transform=transform, download=True)
     test_loader = DataLoader(dataset=test_dataset, batch_size=1000, shuffle=False)
 
-    model = MNISTClassifier()
-    model.load_state_dict(torch.load("src/mnist_model.pth"))
+    if checkpoint_path is None:
+        checkpoint_path = get_checkpoint_path(model_name)
+
+    model = build_model(model_name)
+    model.load_state_dict(torch.load(checkpoint_path, map_location='cpu'))
     model.eval()
 
     correct = 0
@@ -31,8 +40,13 @@ def test_model_accuracy():
             correct += (predictions == labels).sum().item()
 
     accuracy = (correct / total) * 100
-    print(f"Model's accuracy on test data: {accuracy:.2f}%")
+    print(f"Model ({model_name}) accuracy on test data: {accuracy:.2f}%")
 
 
 if __name__ == "__main__":
-    test_model_accuracy()
+    parser = argparse.ArgumentParser(description='MNIST model evaluation')
+    parser.add_argument('--model', choices=['mlp', 'cnn'], default='mlp', help='Model architecture')
+    parser.add_argument('--checkpoint', type=str, default=None, help='Path to model checkpoint')
+    args = parser.parse_args()
+
+    test_model_accuracy(model_name=args.model, checkpoint_path=args.checkpoint)
