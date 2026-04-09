@@ -15,7 +15,8 @@ def get_checkpoint_path(model_name):
 def get_best_checkpoint_path(model_name):
     return os.path.join("src", "checkpoints", f"mnist_{model_name}_best.pth")
 
-
+# Refactored to separate data for 3 loaders: train & val (train.py) and test (evaluate.py).
+# Added validation split and random seed for reproducibility.
 def build_train_val_loaders(batch_size, val_split, seed, use_pin_memory):
     transform_train = transforms.Compose([
         transforms.RandomRotation(10),
